@@ -14,7 +14,6 @@ def hash(string):
 
 	return sha.hexdigest()
 
-
 # Enviar CHA
 def send(bot, update):
 	user = update.message.from_user
@@ -83,8 +82,14 @@ def red(bot, update):
 	blocks = info['blocks']
 	power = info['networkhashps'] / 1000000.0
 
-	logger.info("red() => (%i, %f, %f)" % (blocks, difficulty, power))
-	update.message.reply_text("Bloques: %i\nDificultad: %f\nHashing Power: %f Mh/s" % (blocks, difficulty, power))
+	delta = difficulty * 2**32 / float(info['networkhashps']) / 60 / 60.0
+
+	logger.info("red() => (%i, %f, %f, %i)" % (blocks, difficulty, power, delta))
+
+	msg = "Bloques: %i\nDificultad: %f\nHashing Power: %f Mh/s" +
+		+ "\n\nEl siguiente bloque se creará en %f horas"
+
+	update.message.reply_text(msg % (blocks, difficulty, power, delta))
 
 def error(bot, update, error):
 	logger.warning('Update: "%s" - Error: "%s"', update, error)
