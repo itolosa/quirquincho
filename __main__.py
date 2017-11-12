@@ -14,6 +14,7 @@ def hash(string):
 
 	return sha.hexdigest()
 
+
 # Enviar CHA
 def send(bot, update):
 	user = update.message.from_user
@@ -41,10 +42,11 @@ def send(bot, update):
 	except:
 		amount = 0.0
 		receptor = "invalid"
-		sending = "syntax error"
+		sending = "syntax error\nUSO: /send monto address"
 
 	logger.info("send(%i, %f, %s) => %s" % (user.id, amount, receptor, sending))
 	update.message.reply_text("%s" % sending)		
+
 
 # Generar solo 1 address por usuario (user.id)
 def address(bot, update):
@@ -61,6 +63,7 @@ def address(bot, update):
 	logger.info("address(%i) => %s" % (user.id, address))
 	update.message.reply_text("%s" % address)
 
+
 # Mostrar balance de usuario
 def balance(bot, update):
 	user = update.message.from_user
@@ -70,6 +73,7 @@ def balance(bot, update):
 
 	logger.info("balance(%i) => %f" % (user.id, balance))
 	update.message.reply_text("{0:.8f} CHA".format(balance))
+
 
 # Información de la red
 def red(bot, update):
