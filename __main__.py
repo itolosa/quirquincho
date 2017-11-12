@@ -20,15 +20,31 @@ def send(bot, update):
 	userHash = hash(user.id)
 	balance = float(rpc.getbalance(userHash))
 
-	msgSplit = update.message.text.split(" ")
-	amount = msgSplit[0]
-	receptor = msgSplit[1]
+	try:
+		msgSplit = update.message.text.split(" ")
 
-	if len(address) == 34 and amount > 0 and balance > 0:
-		sending = rpc.sendfrom(userHash, receptor, float(amount))
+		amount = float(msgSplit[1])
+		receptor = msgSplit[2]
 
-	logger.info("send%s, %f) => %s" % (amount, receptor, sending))
-	update.message.reply_text("Txid: %s" % sending)		
+		if not len(receptor) == 34 and receptor[0] == 'c':
+			sending = "Address inválida"
+		else:
+			if not balance > amount:
+				sending = "Balance insuficiente"
+			else:
+				if not amount > 0:
+					sending	= "Monto inválido"
+				else:
+					sending = rpc.sendfrom(userHash, receptor, float(amount))
+					sending = "txid: " + sending
+
+	except:
+		amount = 0.0
+		receptor = "invalid"
+		sending = "syntax error"
+
+	logger.info("send(%i, %f, %s) => %s" % (user.id, amount, receptor, sending))
+	update.message.reply_text("%s" % sending)		
 
 # Generar solo 1 address por usuario (user.id)
 def address(bot, update):
@@ -63,6 +79,7 @@ def red(bot, update):
 	blocks = info['blocks']
 	power = info['networkhashps'] / 1000000.0
 
+	logger.info("red() => (%i, %f, %f)" % (blocks, difficulty, power))
 	update.message.reply_text("Bloques: %i\nDificultad: %f\nHashing Power: %f Mh/s" % (blocks, difficulty, power))
 
 def error(bot, update, error):
@@ -79,8 +96,9 @@ def main():
 	dp = updater.dispatcher
 
 	dp.add_handler(CommandHandler("address", address))
-	dp.add_handler(CommandHandler("red", red))
 	dp.add_handler(CommandHandler("balance", balance))
+	dp.add_handler(CommandHandler("send", send))
+	dp.add_handler(CommandHandler("red", red))
 
 	# log all errors
 	dp.add_error_handler(error)
