@@ -14,6 +14,22 @@ def hash(string):
 
 	return sha.hexdigest()
 
+# Enviar CHA
+def send(bot, update):
+	user = update.message.from_user
+	userHash = hash(user.id)
+	balance = float(rpc.getbalance(userHash))
+
+	msgSplit = update.message.text.split(" ")
+	amount = msgSplit[0]
+	receptor = msgSplit[1]
+
+	if len(address) == 34 and amount > 0 and balance > 0:
+		sending = rpc.sendfrom(userHash, receptor, float(amount))
+
+	logger.info("send%s, %f) => %s" % (amount, receptor, sending))
+	update.message.reply_text("Txid: %s" % sending)		
+
 # Generar solo 1 address por usuario (user.id)
 def address(bot, update):
 	user = update.message.from_user
