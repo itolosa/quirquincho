@@ -86,8 +86,7 @@ def red(bot, update):
 
 	logger.info("red() => (%i, %f, %f, %i)" % (blocks, difficulty, power, delta))
 
-	msg = "Bloques: %i\nDificultad: %f\nHashing Power: %f Mh/s" +
-		+ "\n\nEl siguiente bloque se creará en %f horas"
+	msg = "Bloques: %i\nDificultad: %f\nHashing Power: %f Mh/s\n\nEl siguiente bloque se creará en %f horas"
 
 	update.message.reply_text(msg % (blocks, difficulty, power, delta))
 
