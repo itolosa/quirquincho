@@ -6,7 +6,7 @@ Bot de Telegram para enviar y recibir Chauchas.
 * **/address:** Creación de direcciones dentro del sistema
 * **/balance:** Lectura de saldo de la dirección asignada al usuario
 * **/red:** Información de la red (dificultad, número de bloques y Hashing Power
-* **/send (X) (Y):** Enviar *X* Chauchas a la dirección *Y*
+* **/send X Y:** Enviar *X* Chauchas a la dirección *Y*
  
 ## Requisitos:
 
