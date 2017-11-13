@@ -14,6 +14,19 @@ def hash(string):
 
 	return sha.hexdigest()
 
+def start(bot, update):
+	msg = "Holi, soy Quirquincho :D"
+	msg += "\nPuedes interactuar conmigo con estos tres simples comandos:"
+	msg += "\n\n/address te permite crear una dirección especifica para tu usuario de Telegram, la cual sirve para enviar o recibir Chauchas."
+	msg += "\n\n/balance enseña la cantidad de Chauchas que tienes dentro de esa dirección"
+	msg += "\n\ny con el comando /send puedes enviar Chauchas hacia otras direcciones."
+	msg += "\nPor ejemplo, si deseas enviarle 100 chauchas a la dirección cfBifAmAK3h9Ke4wE2auXaEbfPqeMV44GQ debes usar el comando de la siguiente manera:"
+	msg += "\n\n/send 100 cfBifAmAK3h9Ke4wE2auXaEbfPqeMV44GQ"
+	msg += "\n\nTambien existe el comando /red que te enseña el estado actual de la red."
+
+	logger.info("start(%i)" % user.id)
+	update.message.reply_text("%s" % msg)	
+
 # Enviar CHA
 def send(bot, update):
 	user = update.message.from_user
@@ -84,9 +97,14 @@ def red(bot, update):
 
 	delta = difficulty * 2**32 / float(info['networkhashps']) / 60 / 60.0
 
+	if delta < 60:
+		delta = delta + " horas"
+	else:
+		delta = delta*60 + " minutos"
+
 	logger.info("red() => (%i, %f, %f, %i)" % (blocks, difficulty, power, delta))
 
-	msg = "Bloques: %i\nDificultad: %f\nHashing Power: %f Mh/s\n\nEl siguiente bloque se creará en %f horas"
+	msg = "Bloques: %i\nDificultad: %f\nHashing Power: %f Mh/s\n\nEl siguiente bloque se creará en %s"
 
 	update.message.reply_text(msg % (blocks, difficulty, power, delta))
 
@@ -105,6 +123,7 @@ def main():
 
 	dp.add_handler(CommandHandler("address", address))
 	dp.add_handler(CommandHandler("balance", balance))
+	dp.add_handler(CommandHandler("start", start))
 	dp.add_handler(CommandHandler("send", send))
 	dp.add_handler(CommandHandler("red", red))
 
