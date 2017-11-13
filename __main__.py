@@ -1,6 +1,7 @@
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 from bitcoinrpc.authproxy import AuthServiceProxy
 from random import seed, randint
+from os import urandom
 import hashlib, logging
 from config import *
 
@@ -74,7 +75,7 @@ def send(bot, update):
 
 
 # Dado
-def dado(bot, update):
+def dice(bot, update):
 	user = update.message.from_user
 	userHash = hash(user.id)
 	userAddress = getaddress(userHash)
@@ -96,6 +97,7 @@ def dado(bot, update):
 				if not botBalance > bet:
 					result = "No tengo tantas chauchas :c"
 				else:
+					seed(repr(urandom(64)))
 					dice = randint(0,100)
 					if dice > 50:
 						result = "Ganaste %f CHA !\nNúmero: %i" % (bet, dice)
@@ -112,7 +114,7 @@ def dado(bot, update):
 		bet = 0.0
 		result = "syntax error\nUSO: /dado apuesta"
 	
-	logger.info("dado(%i, %f) => %s" % (user.id, bet, result))
+	logger.info("dice(%i, %f) => %s" % (user.id, bet, result))
 	update.message.reply_text("%s" % result)		
 
 
@@ -178,7 +180,6 @@ def main():
 	# Configuración
 	rpc = AuthServiceProxy("http://%s:%s@127.0.0.1:%i"%(RPCuser, RPCpassword, RPCport))
 	updater = Updater(token)
-	seed(salt)
 
 	# Creación de address para Quirquincho
 	getaddress("quirquincho")
@@ -193,7 +194,7 @@ def main():
 	dp.add_handler(CommandHandler("help", start))
 	dp.add_handler(CommandHandler("send", send))
 	dp.add_handler(CommandHandler("info", info))
-	dp.add_handler(CommandHandler("dado", dado))
+	dp.add_handler(CommandHandler("dice", dice))
 	dp.add_handler(CommandHandler("red", red))
 
 	# log all errors
