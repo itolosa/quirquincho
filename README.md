@@ -1,8 +1,9 @@
-# @[QuirquinchoBot](https://telegram.me/quirquinchobot)
+# [@QuirquinchoBot](https://telegram.me/quirquinchobot)
 Bot de Telegram para enviar y recibir Chauchas.
 
 ## Utilización:
 
+* **/start** o **/help**: Tutorial de uso
 * **/address:** Creación de direcciones dentro del sistema
 * **/balance:** Lectura de saldo de la dirección asignada al usuario
 * **/red:** Información de la red (dificultad, número de bloques y Hashing Power)
