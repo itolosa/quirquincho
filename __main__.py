@@ -24,7 +24,7 @@ def start(bot, update):
 	msg += "\n\nel comando /send puedes enviar Chauchas hacia otras direcciones."
 	msg += " Por ejemplo, si deseas enviarle 100 chauchas a la dirección cfBifAmAK3h9Ke4wE2auXaEbfPqeMV44GQ debes usar el comando de la siguiente manera:"
 	msg += "\n\n/send 100 cfBifAmAK3h9Ke4wE2auXaEbfPqeMV44GQ"
-	msg += "\n\nY para finalizar esta el comando /red, que resume el estado actual de la red."
+	msg += "\n\ny para finalizar esta el comando /red, que resume el estado actual de la red."
 
 	logger.info("start(%i)" % user.id)
 	update.message.reply_text("%s" % msg)	
