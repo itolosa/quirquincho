@@ -15,6 +15,8 @@ def hash(string):
 	return sha.hexdigest()
 
 def start(bot, update):
+	user = update.message.from_user
+	
 	msg = "Holi, soy Quirquincho :D"
 	msg += "\nPuedes interactuar conmigo con estos tres simples comandos:"
 	msg += "\n\n/address te permite crear una dirección especifica para tu usuario de Telegram, la cual sirve para enviar o recibir Chauchas."
