@@ -108,8 +108,8 @@ def dado(bot, update):
 		bet = 0.0
 		result = "syntax error"
 	
-	logger.info("dado(%i, %f) => %i" % (user.id, bet, result))
-	update.message.reply_text("%i" % result)		
+	logger.info("dado(%i, %f) => %s" % (user.id, bet, result))
+	update.message.reply_text("%s" % result)		
 
 
 # Mostrar saldo y address de Quirquincho
