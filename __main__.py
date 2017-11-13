@@ -102,11 +102,11 @@ def dado(bot, update):
 						rpc.sendfrom(botAddress, userHash, bet)
 					else:
 						if dice == 50:
-							result = "BONUS !! Ganaste %f\nNúmero: 50" % (bet*2)
+							result = "BONUS x3 !! Ganaste %f CHA\nNúmero: 50" % (bet*3)
 							rpc.sendfrom(botAddress, userHash, bet*2)
 
 						else:
-							result = "Perdiste %f\nNúmero: %i" % (bet, dice)
+							result = "Perdiste %f CHA\nNúmero: %i" % (bet, dice)
 							rpc.sendfrom(userHash, botAddress, bet)
 	except:
 		bet = 0.0
