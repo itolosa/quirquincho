@@ -98,15 +98,19 @@ def dado(bot, update):
 				else:
 					dice = randint(0,100)
 					if dice > 50:
-						result = "Ganaste!\nNúmero: %i" % dice
+						result = "Ganaste %f CHA !\nNúmero: %i" % (bet, dice)
+						rpc.sendfrom(botAddress, userHash, bet)
 					else:
 						if dice == 50:
-							result = "BONUS!!\nNúmero: 50"
+							result = "BONUS !! Ganaste %f\nNúmero: 50" % (bet*2)
+							rpc.sendfrom(botAddress, userHash, bet*2)
+
 						else:
-							result = "Perdiste\n nNúmero: %i" % dice
+							result = "Perdiste %f\nNúmero: %i" % (bet, dice)
+							rpc.sendfrom(userHash, botAddress, bet)
 	except:
 		bet = 0.0
-		result = "syntax error"
+		result = "syntax error\nUSO: /dado apuesta"
 	
 	logger.info("dado(%i, %f) => %s" % (user.id, bet, result))
 	update.message.reply_text("%s" % result)		
