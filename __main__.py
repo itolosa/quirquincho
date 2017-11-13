@@ -24,7 +24,7 @@ def start(bot, update):
 	msg += "\n\ny con el comando /send puedes enviar Chauchas hacia otras direcciones."
 	msg += " Por ejemplo, si deseas enviarle 100 chauchas a la dirección cfBifAmAK3h9Ke4wE2auXaEbfPqeMV44GQ debes usar el comando de la siguiente manera:"
 	msg += "\n\n/send 100 cfBifAmAK3h9Ke4wE2auXaEbfPqeMV44GQ"
-	msg += "\n\nTambien existe el comando /red que te enseña el estado actual de la red."
+	msg += "\n\También existe el comando /red que te enseña el estado actual de la red."
 
 	logger.info("start(%i)" % user.id)
 	update.message.reply_text("%s" % msg)	
@@ -97,10 +97,10 @@ def red(bot, update):
 	blocks = info['blocks']
 	power = info['networkhashps'] / 1000000.0
 
-	delta = difficulty * 2**32 / float(info['networkhashps']) / 60 / 60.0
+	delta = round(difficulty * 2**32 / float(info['networkhashps']) / 60 / 60.0, 3)
 
 	logger.info("red() => (%i, %f, %f, %i)" % (blocks, difficulty, power, delta))
-	
+
 	if delta < 1:
 		delta = str(delta*60) + " minutos"
 	else:
@@ -126,6 +126,7 @@ def main():
 	dp.add_handler(CommandHandler("address", address))
 	dp.add_handler(CommandHandler("balance", balance))
 	dp.add_handler(CommandHandler("start", start))
+	dp.add_handler(CommandHandler("help", start))
 	dp.add_handler(CommandHandler("send", send))
 	dp.add_handler(CommandHandler("red", red))
 
