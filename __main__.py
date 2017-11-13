@@ -87,7 +87,7 @@ def dado(bot, update):
 		if not bet > 0.001:
 			result = "apuesta inválida"
 		else:
-			if not bet < userBalance or userBalance > 0.001:
+			if not bet < userBalance or not userBalance > 0.001:
 				result = "balance insuficiente"
 			else:
 				botAddress = getaddress("quirquincho")
