@@ -99,12 +99,12 @@ def red(bot, update):
 
 	delta = difficulty * 2**32 / float(info['networkhashps']) / 60 / 60.0
 
+	logger.info("red() => (%i, %f, %f, %i)" % (blocks, difficulty, power, delta))
+	
 	if delta < 1:
 		delta = str(delta*60) + " minutos"
 	else:
 		delta = str(delta) + " horas"
-
-	logger.info("red() => (%i, %f, %f, %i)" % (blocks, difficulty, power, delta))
 
 	msg = "Bloques: %i\nDificultad: %f\nHashing Power: %f Mh/s\n\nEl siguiente bloque se creará en %s"
 
