@@ -79,37 +79,39 @@ def dado(bot, update):
 	userHash = hash(user.id)
 	userAddress = getaddress(userHash)
 	userBalance = float(rpc.getbalance(userHash))
-	botAddress = getaddress("quirquincho")
-	botBalance = float(rpc.getbalance("quirquincho"))
+	
+	try:
+		msgSplit = update.message.text.split(" ")
+		bet = float(msgSplit[1])
 
-	msgSplit = update.message.text.split(" ")
-	bet = float(msgSplit[1])
-
-	if not bet > 0.001:
-		result = "apuesta inválida"
-	else:
-		if not bet < userBalance or not userBalance > 0.001:
-			result = "balance insuficiente"
-		else:				
-			if not botBalance > bet:
-				result = "No tengo tantas chauchas :c"
+		if not bet > 0.001:
+			result = "apuesta inválida"
+		else:
+			if not bet < userBalance or not userBalance > 0.001:
+				result = "balance insuficiente"
 			else:
-				dice = randint(0,100)
-				if dice > 50:
-					result = "Ganaste %f CHA !\nNúmero: %i" % (bet, dice)
-					rpc.sendfrom(botAddress, userHash, bet)
-				else:
-					if dice == 50:
-						result = "BONUS x3 !! Ganaste %f CHA\nNúmero: 50" % (bet*3)
-						rpc.sendfrom(botAddress, userHash, bet*2)
+				botAddress = getaddress("quirquincho")
+				botBalance = float(rpc.getbalance("quirquincho"))
 
+				if not botBalance > bet:
+					result = "No tengo tantas chauchas :c"
+				else:
+					dice = randint(0,100)
+					if dice > 50:
+						result = "Ganaste %f CHA !\nNúmero: %i" % (bet, dice)
+						rpc.sendfrom("quirquincho", userAddress, bet)
 					else:
-						result = "Perdiste %f CHA\nNúmero: %i" % (bet, dice)
-						rpc.sendfrom(userHash, botAddress, bet)
-	'''except:
+						if dice == 50:
+							result = "BONUS x3 !! Ganaste %f CHA\nNúmero: 50" % (bet*3)
+							rpc.sendfrom("quirquincho", userAddress, bet*2)
+
+						else:
+							result = "Perdiste %f CHA\nNúmero: %i" % (bet, dice)
+							rpc.sendfrom(userHash, botAddress, bet)
+	except:
 		bet = 0.0
 		result = "syntax error\nUSO: /dado apuesta"
-	'''
+	
 	logger.info("dado(%i, %f) => %s" % (user.id, bet, result))
 	update.message.reply_text("%s" % result)		
 
