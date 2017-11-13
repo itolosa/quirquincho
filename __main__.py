@@ -85,6 +85,14 @@ def dado(bot, update):
 	update.message.reply_text("%i" % result)		
 
 
+# Mostrar saldo y address de Quirquincho
+def info(bot, update):
+	address = getaddress("quirquincho")
+	balance = float(rpc.getbalance("quirquincho"))
+
+	logger.info("info() => (%s, %f)" % (address, balance))
+	update.message.reply_text("Address: %s\nBalance: %f" % (address, balance))		
+
 
 # Generar solo 1 address por usuario (user.id)
 def address(bot, update):
@@ -141,17 +149,19 @@ def main():
 	updater = Updater(token)
 	seed(salt)
 
-	# Creación de address para el bot
+	# Creación de address para Quirquincho
 	getaddress("quirquincho")
 
 	# Get the dispatcher to register handlers
 	dp = updater.dispatcher
 
+	# Listado de comandos
 	dp.add_handler(CommandHandler("address", address))
 	dp.add_handler(CommandHandler("balance", balance))
 	dp.add_handler(CommandHandler("start", start))
 	dp.add_handler(CommandHandler("help", start))
 	dp.add_handler(CommandHandler("send", send))
+	dp.add_handler(CommandHandler("info", info))
 	dp.add_handler(CommandHandler("dado", dado))
 	dp.add_handler(CommandHandler("red", red))
 
