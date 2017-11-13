@@ -17,14 +17,14 @@ def hash(string):
 def start(bot, update):
 	user = update.message.from_user
 
-	msg = "Holi, soy Quirquincho :D"
-	msg += "\nPuedes interactuar conmigo con estos tres simples comandos:"
-	msg += "\n\n/address te permite crear una dirección especifica para tu usuario de Telegram, la cual sirve para enviar o recibir Chauchas."
-	msg += "\n\n/balance enseña la cantidad de Chauchas que tienes dentro de esa dirección"
-	msg += "\n\ny con el comando /send puedes enviar Chauchas hacia otras direcciones."
+	msg = "**Holi !**, soy Quirquincho :D"
+	msg += "\n\nPuedes interactuar conmigo con estos tres simples comandos:"
+	msg += "\n\n/address te **permite crear una dirección** especifica para tu usuario de Telegram, la cual sirve para enviar o recibir Chauchas."
+	msg += "\n\n/balance enseña la **cantidad de Chauchas** que tienes dentro de esa dirección"
+	msg += "\n\ny con el comando /send puedes **enviar** Chauchas hacia otras direcciones."
 	msg += " Por ejemplo, si deseas enviarle 100 chauchas a la dirección cfBifAmAK3h9Ke4wE2auXaEbfPqeMV44GQ debes usar el comando de la siguiente manera:"
 	msg += "\n\n/send 100 cfBifAmAK3h9Ke4wE2auXaEbfPqeMV44GQ"
-	msg += "\n\También existe el comando /red que te enseña el estado actual de la red."
+	msg += "\n\nTambién existe el comando /red que te enseña el **estado actual** de la red."
 
 	logger.info("start(%i)" % user.id)
 	update.message.reply_text("%s" % msg)	
