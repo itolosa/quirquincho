@@ -94,7 +94,7 @@ def dado(bot, update):
 				botBalance = float(rpc.getbalance("quirquincho"))
 				
 				if not botBalance > bet:
-					result "No tengo tantas chauchas :c"
+					result = "No tengo tantas chauchas :c"
 				else:
 					dice = randint(0,100)
 					if dice > 50:
