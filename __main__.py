@@ -80,29 +80,33 @@ def dado(bot, update):
 	userAddress = getaddress(userHash)
 	userBalance = float(rpc.getbalance(userHash))
 
-	msgSplit = update.message.text.split(" ")
-	bet = float(msgSplit[1])
+	try:
+		msgSplit = update.message.text.split(" ")
+		bet = float(msgSplit[1])
 
-	if not bet > 0.001:
-		result = "apuesta inválida"
-	else:
-		if not bet < userBalance or userBalance > 0.001:
-			result = "balance insuficiente"
+		if not bet > 0.001:
+			result = "apuesta inválida"
 		else:
-			botAddress = getaddress("quirquincho")
-			botBalance = float(rpc.getbalance("quirquincho"))
-			
-			if not botBalance > bet:
-				result "No tengo tantas chauchas :c"
+			if not bet < userBalance or userBalance > 0.001:
+				result = "balance insuficiente"
 			else:
-				dice = randint(0,100)
-				if dice > 50:
-					result = "Ganaste!\nNúmero: %i" % dice
+				botAddress = getaddress("quirquincho")
+				botBalance = float(rpc.getbalance("quirquincho"))
+				
+				if not botBalance > bet:
+					result "No tengo tantas chauchas :c"
 				else:
-					if dice == 50:
-						result = "BONUS!!\nNúmero: 50"
+					dice = randint(0,100)
+					if dice > 50:
+						result = "Ganaste!\nNúmero: %i" % dice
 					else:
-						result = "Perdiste\n nNúmero: %i" % dice
+						if dice == 50:
+							result = "BONUS!!\nNúmero: 50"
+						else:
+							result = "Perdiste\n nNúmero: %i" % dice
+	except:
+		bet = 0.0
+		result = "syntax error"
 	
 	logger.info("dado(%i, %f) => %i" % (user.id, bet, result))
 	update.message.reply_text("%i" % result)		
