@@ -77,11 +77,34 @@ def send(bot, update):
 def dado(bot, update):
 	user = update.message.from_user
 	userHash = hash(user.id)
-	balance = float(rpc.getbalance(userHash))
+	userAddress = getaddress(userHash)
+	userBalance = float(rpc.getbalance(userHash))
 
-	result = randint(0,100)
+	msgSplit = update.message.text.split(" ")
+	bet = float(msgSplit[1])
+
+	if not bet > 0.001:
+		result = "apuesta inválida"
+	else:
+		if not bet < userBalance or userBalance > 0.001:
+			result = "balance insuficiente"
+		else:
+			botAddress = getaddress("quirquincho")
+			botBalance = float(rpc.getbalance("quirquincho"))
+			
+			if not botBalance > bet:
+				result "No tengo tantas chauchas :c"
+			else:
+				dice = randint(0,100)
+				if dice > 50:
+					result = "Ganaste!\nNúmero: %i" % dice
+				else:
+					if dice == 50:
+						result = "BONUS!!\nNúmero: 50"
+					else:
+						result = "Perdiste\n nNúmero: %i" % dice
 	
-	logger.info("dado(%i, %f) => %i" % (user.id, balance, result))
+	logger.info("dado(%i, %f) => %i" % (user.id, bet, result))
 	update.message.reply_text("%i" % result)		
 
 
