@@ -18,7 +18,7 @@ def start(bot, update):
 	user = update.message.from_user
 
 	msg = "Holi, soy Quirquincho :D"
-	msg += "\nPuedes interactuar conmigo con estos tres simples comandos:"
+	msg += "\nPuedes interactuar conmigo con estos cuatro simples comandos:"
 	msg += "\n\n/address te permite crear una dirección especifica para tu usuario de Telegram, la cual sirve para enviar o recibir Chauchas."
 	msg += "\n\n/balance enseña la cantidad de Chauchas que tienes dentro de esa dirección"
 	msg += "\n\nel comando /send puedes enviar Chauchas hacia otras direcciones."
