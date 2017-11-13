@@ -1,7 +1,8 @@
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
-from config import *
 from bitcoinrpc.authproxy import AuthServiceProxy
+from random import seed, randint
 import hashlib, logging
+from config import *
 
 logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s', level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -13,6 +14,16 @@ def hash(string):
 	sha.update(template)
 
 	return sha.hexdigest()
+
+def getaddress(name):
+	addressList = rpc.getaddressesbyaccount(name)
+
+	if len(addressList) == 0:
+		address = rpc.getnewaddress(name)
+	else:
+		address = addressList[0]
+
+	return address
 
 def start(bot, update):
 	user = update.message.from_user
@@ -62,17 +73,25 @@ def send(bot, update):
 	update.message.reply_text("%s" % sending)		
 
 
+# Dado
+def dado(bot, update):
+	user = update.message.from_user
+	userHash = hash(user.id)
+	balance = float(rpc.getbalance(userHash))
+
+	result = randint(0,100)
+	
+	logger.info("dado(%i, %f) => %i" % (user.id, balance, result))
+	update.message.reply_text("%i" % result)		
+
+
+
 # Generar solo 1 address por usuario (user.id)
 def address(bot, update):
 	user = update.message.from_user
 	userHash = hash(user.id)
 
-	addressList = rpc.getaddressesbyaccount(userHash)
-
-	if len(addressList) == 0:
-		address = rpc.getnewaddress(userHash)
-	else:
-		address = addressList[0]
+	address = getaddress(userHash)
 
 	logger.info("address(%i) => %s" % (user.id, address))
 	update.message.reply_text("%s" % address)
@@ -117,8 +136,13 @@ def error(bot, update, error):
 def main():
 	global rpc
 
+	# Configuración
 	rpc = AuthServiceProxy("http://%s:%s@127.0.0.1:%i"%(RPCuser, RPCpassword, RPCport))
 	updater = Updater(token)
+	seed(salt)
+
+	# Creación de address para el bot
+	getaddress("quirquincho")
 
 	# Get the dispatcher to register handlers
 	dp = updater.dispatcher
@@ -128,6 +152,7 @@ def main():
 	dp.add_handler(CommandHandler("start", start))
 	dp.add_handler(CommandHandler("help", start))
 	dp.add_handler(CommandHandler("send", send))
+	dp.add_handler(CommandHandler("dado", dado))
 	dp.add_handler(CommandHandler("red", red))
 
 	# log all errors
