@@ -81,11 +81,11 @@ def dice(bot, update):
 	userHash = hash(user.id)
 	userAddress = getaddress(userHash)
 	userBalance = float(rpc.getbalance(userHash))
-	
+	rand = -1
+
 	try:
 		msgSplit = update.message.text.split(" ")
 		bet = float(msgSplit[1])
-		dice = -1
 
 		if not bet > 0.001:
 			result = "apuesta inválida"
@@ -106,32 +106,32 @@ def dice(bot, update):
 			else:
 				# Seed y generación de valor aleatorio
 				seed(repr(urandom(64)))
-				dice = randint(0,maxNumber)
+				rand = randint(0,maxNumber)
 
 				# Bonus
-				if dice == lucky:
+				if rand == lucky:
 					result = "BONUS x2 !! Ganaste %f CHA\nNúmero: %i" % (prize, lucky)
 					rpc.sendfrom("quirquincho", userAddress, prize)
 
 				# Ganar
-				elif dice > lucky:
-					result = "Ganaste %f CHA !\nNúmero: %i" % (bet, dice)
+				elif rand > lucky:
+					result = "Ganaste %f CHA !\nNúmero: %i" % (bet, rand)
 					rpc.sendfrom("quirquincho", userAddress, bet)
 
 				# ???
-				elif dice == int(bet):
+				elif rand == int(bet):
 					result = "Vale otro..."
 
 				# Perder
 				else:
-					result = "Perdiste %f CHA\nNúmero: %i" % (bet, dice)
+					result = "Perdiste %f CHA\nNúmero: %i" % (bet, rand)
 					rpc.sendfrom(userHash, botAddress, bet)
 	except:
 		bet = 0.0
-		dice = 0
+		rand = 0
 		result = "syntax error\nUSO: /dado apuesta"
 	
-	logger.info("dice(%i, %f, %i) => %s" % (user.id, bet, dice, result))
+	logger.info("dice(%i, %f, %i) => %s" % (user.id, bet, rand, result))
 	update.message.reply_text("%s" % result)		
 
 
