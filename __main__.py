@@ -55,15 +55,16 @@ def send(bot, update):
 
 		if not len(receptor) == 34 and receptor[0] == 'c':
 			sending = "Address inválida"
+
+		elif not balance > amount:
+			sending = "Balance insuficiente"
+
+		elif not amount > 0:
+				sending	= "Monto inválido"
+
 		else:
-			if not balance > amount:
-				sending = "Balance insuficiente"
-			else:
-				if not amount > 0:
-					sending	= "Monto inválido"
-				else:
-					sending = rpc.sendfrom(userHash, receptor, float(amount))
-					sending = "txid: " + sending
+			sending = rpc.sendfrom(userHash, receptor, float(amount))
+			sending = "txid: " + sending
 
 	except:
 		amount = 0.0
@@ -87,37 +88,43 @@ def dice(bot, update):
 
 		if not bet > 0.001:
 			result = "apuesta inválida"
+
+		elif not bet < userBalance or not userBalance > 0.001:
+			result = "balance insuficiente"
+
 		else:
-			if not bet < userBalance or not userBalance > 0.001:
-				result = "balance insuficiente"
+			botAddress = getaddress("quirquincho")
+			botBalance = float(rpc.getbalance("quirquincho"))
+
+			prize = bet * 2
+			maxNumber = 1000
+			lucky = int(maxNumber/2)
+
+			if not botBalance > prize:
+				result = "No tengo tantas chauchas :c"
 			else:
-				botAddress = getaddress("quirquincho")
-				botBalance = float(rpc.getbalance("quirquincho"))
+				# Seed y generación de valor aleatorio
+				seed(repr(urandom(64)))
+				dice = randint(0,maxNumber)
 
-				prize = bet * 2
-				maxNumber = 1000
-				lucky = int(maxNumber/2)
+				# Bonus
+				if dice == lucky:
+					result = "BONUS x2 !! Ganaste %f CHA\nNúmero: %i" % (prize, lucky)
+					rpc.sendfrom("quirquincho", userAddress, prize)
 
-				if not botBalance > prize:
-					result = "No tengo tantas chauchas :c"
+				# Ganar
+				elif dice > lucky:
+					result = "Ganaste %f CHA !\nNúmero: %i" % (bet, dice)
+					rpc.sendfrom("quirquincho", userAddress, bet)
+
+				# ???
+				elif dice == int(bet):
+					result = "Vale otro..."
+
+				# Perder
 				else:
-					#Seed y generación de valor aleatorio
-					seed(repr(urandom(64)))
-					dice = randint(0,maxNumber)
-
-					if dice == int(bet):
-						result = "Vale otro..."
-					else:
-						if dice > lucky:
-							result = "Ganaste %f CHA !\nNúmero: %i" % (bet, dice)
-							rpc.sendfrom("quirquincho", userAddress, bet)
-						else:
-							if dice == lucky:
-								result = "BONUS x2 !! Ganaste %f CHA\nNúmero: %i" % (prize, lucky)
-								rpc.sendfrom("quirquincho", userAddress, prize)
-							else:
-								result = "Perdiste %f CHA\nNúmero: %i" % (bet, dice)
-								rpc.sendfrom(userHash, botAddress, bet)
+					result = "Perdiste %f CHA\nNúmero: %i" % (bet, dice)
+					rpc.sendfrom(userHash, botAddress, bet)
 	except:
 		bet = 0.0
 		dice = 0
