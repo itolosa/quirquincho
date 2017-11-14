@@ -85,6 +85,7 @@ def dice(bot, update):
 	try:
 		msgSplit = update.message.text.split(" ")
 		bet = float(msgSplit[1])
+		dice = -1
 
 		if not bet > 0.001:
 			result = "apuesta inválida"
