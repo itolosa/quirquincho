@@ -94,19 +94,22 @@ def dice(bot, update):
 				botAddress = getaddress("quirquincho")
 				botBalance = float(rpc.getbalance("quirquincho"))
 
-				if not botBalance > bet:
+				prize = bet * 3
+				lucky = 50
+				if not botBalance > prize:
 					result = "No tengo tantas chauchas :c"
 				else:
 					seed(repr(urandom(64)))
 					dice = randint(0,100)
-					if dice > 50:
+					if dice > lucky:
 						result = "Ganaste %f CHA !\nNúmero: %i" % (bet, dice)
 						rpc.sendfrom("quirquincho", userAddress, bet)
 					else:
-						if dice == 50:
-							result = "BONUS x3 !! Ganaste %f CHA\nNúmero: 50" % (bet*3)
-							rpc.sendfrom("quirquincho", userAddress, bet*3)
-
+						if dice == lucky:
+							result = "BONUS x3 !! Ganaste %f CHA\nNúmero: %i" % (prize, lucky)
+							rpc.sendfrom("quirquincho", userAddress, prize)
+						elif dice == bet:
+							result = "Te Salvaste. Te salió un Vale otro."
 						else:
 							result = "Perdiste %f CHA\nNúmero: %i" % (bet, dice)
 							rpc.sendfrom(userHash, botAddress, bet)
