@@ -94,25 +94,30 @@ def dice(bot, update):
 				botAddress = getaddress("quirquincho")
 				botBalance = float(rpc.getbalance("quirquincho"))
 
-				prize = bet * 3
-				lucky = 50
+				prize = bet * 2
+				maxNumber = 1000
+				lucky = int(maxNumber/2)
+
 				if not botBalance > prize:
 					result = "No tengo tantas chauchas :c"
 				else:
+					#Seed y generación de valor aleatorio
 					seed(repr(urandom(64)))
-					dice = randint(0,100)
-					if dice > lucky:
-						result = "Ganaste %f CHA !\nNúmero: %i" % (bet, dice)
-						rpc.sendfrom("quirquincho", userAddress, bet)
+					dice = randint(0,maxNumber)
+
+					if dice == int(bet):
+						result = "Vale otro..."
 					else:
-						if dice == lucky:
-							result = "BONUS x3 !! Ganaste %f CHA\nNúmero: %i" % (prize, lucky)
-							rpc.sendfrom("quirquincho", userAddress, prize)
-						elif dice == bet:
-							result = "Te Salvaste. Te salió un Vale otro."
+						if dice > lucky:
+							result = "Ganaste %f CHA !\nNúmero: %i" % (bet, dice)
+							rpc.sendfrom("quirquincho", userAddress, bet)
 						else:
-							result = "Perdiste %f CHA\nNúmero: %i" % (bet, dice)
-							rpc.sendfrom(userHash, botAddress, bet)
+							if dice == lucky:
+								result = "BONUS x2 !! Ganaste %f CHA\nNúmero: %i" % (prize, lucky)
+								rpc.sendfrom("quirquincho", userAddress, prize)
+							else:
+								result = "Perdiste %f CHA\nNúmero: %i" % (bet, dice)
+								rpc.sendfrom(userHash, botAddress, bet)
 	except:
 		bet = 0.0
 		result = "syntax error\nUSO: /dado apuesta"
