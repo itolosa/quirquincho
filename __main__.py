@@ -120,9 +120,10 @@ def dice(bot, update):
 								rpc.sendfrom(userHash, botAddress, bet)
 	except:
 		bet = 0.0
+		dice = 0
 		result = "syntax error\nUSO: /dado apuesta"
 	
-	logger.info("dice(%i, %f) => %s" % (user.id, bet, result))
+	logger.info("dice(%i, %f, %i) => %s" % (user.id, bet, dice, result))
 	update.message.reply_text("%s" % result)		
 
 
