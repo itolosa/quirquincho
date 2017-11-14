@@ -105,7 +105,7 @@ def dice(bot, update):
 					else:
 						if dice == 50:
 							result = "BONUS x3 !! Ganaste %f CHA\nNúmero: 50" % (bet*3)
-							rpc.sendfrom("quirquincho", userAddress, bet*2)
+							rpc.sendfrom("quirquincho", userAddress, bet*3)
 
 						else:
 							result = "Perdiste %f CHA\nNúmero: %i" % (bet, dice)
