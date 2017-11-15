@@ -129,7 +129,7 @@ def dice(bot, update):
 	except:
 		bet = 0.0
 		rand = 0
-		result = "syntax error\nUSO: /dado apuesta"
+		result = "syntax error\nUSO: /dice apuesta"
 	
 	logger.info("dice(%i, %f, %i) => %s" % (user.id, bet, rand, result))
 	update.message.reply_text("%s" % result)		
@@ -141,7 +141,7 @@ def info(bot, update):
 	balance = float(rpc.getbalance("quirquincho"))
 
 	logger.info("info() => (%s, %f)" % (address, balance))
-	update.message.reply_text("Address: %s\nBalance: %f" % (address, balance))		
+	update.message.reply_text("Balance de Quirquincho: %f CHA" % (address, balance))		
 
 
 # Generar solo 1 address por usuario (user.id)
