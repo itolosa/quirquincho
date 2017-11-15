@@ -141,7 +141,7 @@ def info(bot, update):
 	balance = float(rpc.getbalance("quirquincho"))
 
 	logger.info("info() => (%s, %f)" % (address, balance))
-	update.message.reply_text("Balance de Quirquincho: %f CHA" % (address, balance))		
+	update.message.reply_text("Balance de Quirquincho: %f CHA" % balance)		
 
 
 # Generar solo 1 address por usuario (user.id)
