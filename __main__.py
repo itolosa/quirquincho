@@ -8,6 +8,8 @@ from config import *
 logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s', level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+rpc = AuthServiceProxy("http://%s:%s@127.0.0.1:%i"%(RPCuser, RPCpassword, RPCport))
+
 # Hashing de (string + salt) en algoritmo sha256
 def hash(string):
 	sha = hashlib.sha256()
@@ -16,6 +18,8 @@ def hash(string):
 
 	return sha.hexdigest()
 
+
+# Lectura de address, o generación si no existe
 def getaddress(name):
 	addressList = rpc.getaddressesbyaccount(name)
 
@@ -25,6 +29,7 @@ def getaddress(name):
 		address = addressList[0]
 
 	return address
+
 
 def start(bot, update):
 	user = update.message.from_user
@@ -190,16 +195,11 @@ def red(bot, update):
 def error(bot, update, error):
 	logger.warning('Update: "%s" - Error: "%s"', update, error)
 
-
+# Main loop
 def main():
-	global rpc
 
 	# Configuración
-	rpc = AuthServiceProxy("http://%s:%s@127.0.0.1:%i"%(RPCuser, RPCpassword, RPCport))
 	updater = Updater(token)
-
-	# Creación de address para Quirquincho
-	getaddress("quirquincho")
 
 	# Get the dispatcher to register handlers
 	dp = updater.dispatcher
@@ -217,10 +217,11 @@ def main():
 	# log all errors
 	dp.add_error_handler(error)
 
-	# Start the Bot
-	updater.start_polling()
 
-	logger.info("Init")
+	# Inicio de bot
+	botAddress = getaddress("quirquincho")
+	logger.info("Quirquincho V 1.0 - %s" % botAddress)
+	updater.start_polling()
 
 	updater.idle()
 
