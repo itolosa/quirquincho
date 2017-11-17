@@ -173,10 +173,12 @@ def red(bot, update):
 	info = rpc.getmininginfo()
 
 	difficulty = float(info['difficulty'])
-	blocks = int(info['blocks'])
+	blocks = info['blocks']
 	power = info['networkhashps'] / 1000000.0
 
 	delta = difficulty * 2**32 / float(info['networkhashps']) / 60 / 60.0
+
+	logger.info("red() => (%i, %f, %f, %i)" % (blocks, difficulty, power, delta))
 
 	if delta < 1:
 		delta = str(round(delta*60, 3)) + " minutos"
@@ -185,7 +187,6 @@ def red(bot, update):
 
 	msg = "Bloques: %i\nDificultad: %f\nHashing Power: %f Mh/s\n\nEl siguiente bloque se creará en %s"
 
-	logger.info("red() => (%i, %f, %f, %i)" % (blocks, difficulty, power, delta))
 	update.message.reply_text(msg % (blocks, difficulty, power, delta))
 
 def error(bot, update, error):
