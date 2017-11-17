@@ -187,7 +187,7 @@ def red(bot, update):
 
 	msg = "Bloques: %i\nDificultad: %f\nHashing Power: %f Mh/s\n\nEl siguiente bloque se creará en %s"
 
-	logger.info("red(%i) => %f" % (user.id, msg.replace('\n',' // ')))
+	logger.info("red() => %s" % (msg.replace('\n',' // ')))
 	update.message.reply_text(msg % (blocks, difficulty, power, delta))
 
 def error(bot, update, error):
