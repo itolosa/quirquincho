@@ -47,16 +47,14 @@ def start(bot, update):
 	update.message.reply_text("%s" % msg)	
 
 # Enviar CHA
-def send(bot, update):
+def send(bot, update, args):
 	user = update.message.from_user
 	userHash = hash(user.id)
 	balance = float(rpc.getbalance(userHash))
 
 	try:
-		msgSplit = update.message.text.split(" ")
-
-		amount = float(msgSplit[1])
-		receptor = msgSplit[2]
+		amount = float(args[0])
+		receptor = args[1]
 
 		if not len(receptor) == 34 and receptor[0] == 'c':
 			sending = "Address inválida"
@@ -81,7 +79,7 @@ def send(bot, update):
 
 
 # Dado
-def dice(bot, update):
+def dice(bot, update, args):
 	user = update.message.from_user
 	userHash = hash(user.id)
 	userAddress = getaddress(userHash)
@@ -89,8 +87,7 @@ def dice(bot, update):
 	rand = -1
 
 	try:
-		msgSplit = update.message.text.split(" ")
-		bet = float(msgSplit[1])
+		bet = float(args[0])
 
 		if not bet > 0.001:
 			result = "apuesta inválida"
@@ -197,7 +194,6 @@ def error(bot, update, error):
 
 # Main loop
 def main():
-
 	# Configuración
 	updater = Updater(token)
 
