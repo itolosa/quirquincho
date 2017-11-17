@@ -201,13 +201,13 @@ def main():
 	dp = updater.dispatcher
 
 	# Listado de comandos
+	dp.add_handler(CommandHandler("send", send, pass_args=True))
+	dp.add_handler(CommandHandler("dice", dice, pass_args=True))
 	dp.add_handler(CommandHandler("address", address))
 	dp.add_handler(CommandHandler("balance", balance))
 	dp.add_handler(CommandHandler("start", start))
 	dp.add_handler(CommandHandler("help", start))
-	dp.add_handler(CommandHandler("send", send))
 	dp.add_handler(CommandHandler("info", info))
-	dp.add_handler(CommandHandler("dice", dice))
 	dp.add_handler(CommandHandler("red", red))
 
 	# log all errors
