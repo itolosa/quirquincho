@@ -74,7 +74,7 @@ def send(bot, update, args):
 		receptor = "invalid"
 		sending = "syntax error\nUSO: /send monto address"
 
-	logger.info("send(%i, %f, %s) => %s" % (user.id, amount, receptor, sending))
+	logger.info("send(%i, %f, %s) => %s" % (user.id, amount, receptor, sending.replace('\n',' // ')))
 	update.message.reply_text("%s" % sending)		
 
 
@@ -133,7 +133,7 @@ def dice(bot, update, args):
 		rand = 0
 		result = "syntax error\nUSO: /dice apuesta"
 	
-	logger.info("dice(%i, %f, %i) => %s" % (user.id, bet, rand, result))
+	logger.info("dice(%i, %f, %i) => %s" % (user.id, bet, rand, result.replace('\n',' // ')))
 	update.message.reply_text("%s" % result)		
 
 
@@ -187,6 +187,7 @@ def red(bot, update):
 
 	msg = "Bloques: %i\nDificultad: %f\nHashing Power: %f Mh/s\n\nEl siguiente bloque se creará en %s"
 
+	logger.info("red(%i) => %f" % (user.id, msg.replace('\n',' // ')))
 	update.message.reply_text(msg % (blocks, difficulty, power, delta))
 
 def error(bot, update, error):
