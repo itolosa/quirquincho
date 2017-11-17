@@ -173,7 +173,7 @@ def red(bot, update):
 	info = rpc.getmininginfo()
 
 	difficulty = float(info['difficulty'])
-	blocks = info['blocks']
+	blocks = int(info['blocks'])
 	power = info['networkhashps'] / 1000000.0
 
 	delta = difficulty * 2**32 / float(info['networkhashps']) / 60 / 60.0
