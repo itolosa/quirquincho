@@ -170,6 +170,8 @@ def balance(bot, update):
 
 # Información de la red
 def red(bot, update):
+	info = rpc.getmininginfo()
+
 	difficulty = float(info['difficulty'])
 	blocks = info['blocks']
 	power = info['networkhashps'] / 1000000.0
