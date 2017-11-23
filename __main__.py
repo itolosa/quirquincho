@@ -173,7 +173,7 @@ def precio(bot, update):
 
 	msg = 'Precio de compra: %s\nPrecio de venta: %s\nVariación (24h): %s%' % (ask, bid, var)
 
-	logger.info("precio() => %s" % msg)
+	logger.info("precio() => %s" % msg.replace('\n',' // '))
 	update.message.reply_text("%s" % msg)	
 
 
