@@ -171,7 +171,7 @@ def precio(bot, update):
 	ask = '{0:.8f} CHA'.format(api['Ask'])
 	var = api['Variation24Hr']
 
-	msg = 'Precio de compra: %s\nPrecio de venta: %s\nVariación (24h): %s %' % (ask, bid, var)
+	msg = 'Precio de compra: %s\nPrecio de venta: %s\nVariación (24h): %s' % (ask, bid, var)
 
 	logger.info("precio() => %s" % msg.replace('\n',' // '))
 	update.message.reply_text("%s" % msg)	
