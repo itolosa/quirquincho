@@ -4,6 +4,8 @@ from random import seed, randint
 from os import urandom
 import hashlib, logging
 from config import *
+from urllib.request import urlopen
+from json import load
 
 logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s', level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -71,7 +73,7 @@ def send(bot, update, args):
 
 	except:
 		amount = 0.0
-		receptor = "invalid"
+ 		receptor = "invalid"
 		sending = "syntax error\nUSO: /send monto address"
 
 	logger.info("send(%i, %f, %s) => %s" % (user.id, amount, receptor, sending.replace('\n',' // ')))
@@ -157,6 +159,21 @@ def address(bot, update):
 	update.message.reply_text("%s" % address)
 
 
+# Lectura de precio de mercado
+def precio(bot, update):
+	web = urlopen('https://www.southxchange.com/api/price/cha/btc')
+	api = load(web)
+
+	bid = '{0:.8f}'.format(api['Bid'])
+	ask = '{0:.8f}'.format(api['Ask'])
+	var = round(float(api['Variation24Hr']), 2)
+
+	msg = 'Precio de compra: %s\nPrecio de venta: %s\Variación (24h): %f' % (ask, bid, var)
+
+	logger.info("precio() => %s" % msg)
+	update.message.reply_text("%s" % msg)	
+
+
 # Mostrar balance de usuario
 def balance(bot, update):
 	user = update.message.from_user
@@ -207,6 +224,7 @@ def main():
 	dp.add_handler(CommandHandler("start", start))
 	dp.add_handler(CommandHandler("help", start))
 	dp.add_handler(CommandHandler("info", info))
+	dp.add_handler(CommandHandler("precio", precio))
 	dp.add_handler(CommandHandler("red", red))
 
 	# log all errors
