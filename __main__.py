@@ -162,7 +162,7 @@ def address(bot, update):
 # Lectura de precio de mercado
 def precio(bot, update):
 	web = urlopen('https://www.southxchange.com/api/price/cha/btc')
-	api = load(web)
+	api = load(web.decode('utf-8'))
 
 	bid = '{0:.8f}'.format(api['Bid'])
 	ask = '{0:.8f}'.format(api['Ask'])
