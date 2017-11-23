@@ -6,6 +6,8 @@ import hashlib, logging
 from config import *
 from urllib.request import urlopen
 from json import load
+import codecs
+
 
 logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s', level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -162,7 +164,8 @@ def address(bot, update):
 # Lectura de precio de mercado
 def precio(bot, update):
 	web = urlopen('https://www.southxchange.com/api/price/cha/btc')
-	api = load(web.decode('utf-8'))
+	reader = codecs.getreader("utf-8")
+	api = load(reader(web))
 
 	bid = '{0:.8f}'.format(api['Bid'])
 	ask = '{0:.8f}'.format(api['Ask'])
