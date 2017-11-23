@@ -73,7 +73,7 @@ def send(bot, update, args):
 
 	except:
 		amount = 0.0
- 		receptor = "invalid"
+		receptor = "invalid"
 		sending = "syntax error\nUSO: /send monto address"
 
 	logger.info("send(%i, %f, %s) => %s" % (user.id, amount, receptor, sending.replace('\n',' // ')))
