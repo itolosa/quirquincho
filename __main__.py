@@ -167,11 +167,11 @@ def precio(bot, update):
 	reader = codecs.getreader("utf-8")
 	api = load(reader(web))
 
-	bid = '{0:.8f}'.format(api['Bid'])
-	ask = '{0:.8f}'.format(api['Ask'])
-	var = round(float(api['Variation24Hr']), 2)
+	bid = '{0:.8f} CHA'.format(api['Bid'])
+	ask = '{0:.8f} CHA'.format(api['Ask'])
+	var = api['Variation24Hr']
 
-	msg = 'Precio de compra: %s\nPrecio de venta: %s\Variación (24h): %f' % (ask, bid, var)
+	msg = 'Precio de compra: %s\nPrecio de venta: %s\nVariación (24h): %s%' % (ask, bid, var)
 
 	logger.info("precio() => %s" % msg)
 	update.message.reply_text("%s" % msg)	
