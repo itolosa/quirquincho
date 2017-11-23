@@ -167,8 +167,8 @@ def precio(bot, update):
 	reader = codecs.getreader("utf-8")
 	api = load(reader(web))
 
-	bid = '{0:.8f} CHA'.format(api['Bid'])
-	ask = '{0:.8f} CHA'.format(api['Ask'])
+	bid = '{0:.8f} BTC'.format(api['Bid'])
+	ask = '{0:.8f} BTC'.format(api['Ask'])
 	var = api['Variation24Hr']
 
 	msg = 'Precio de compra: %s\nPrecio de venta: %s\nVariación (24h): %s' % (ask, bid, var)
