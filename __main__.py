@@ -93,10 +93,10 @@ def dice(bot, update, args):
 	try:
 		bet = float(args[0])
 
-		if not bet > 0.001:
+		if not bet > 0:
 			result = "apuesta inválida"
 
-		elif not bet < userBalance or not userBalance > 0.001:
+		elif not bet < userBalance:
 			result = "balance insuficiente"
 
 		else:
