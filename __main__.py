@@ -171,8 +171,16 @@ def precio(bot, update):
 	ask = '{0:.8f} BTC'.format(api['Ask'])
 	var = api['Variation24Hr']
 
-	msg = 'Precio de compra: %s\nPrecio de venta: %s\nVariación (24h): %s' % (ask, bid, var)
-	msg += '%'
+	orion = urlopen('https://api.orionx.io/graphql?query={marketOrderBook(marketCode:"CHACLP"){spread,mid}}')
+	reader = codecs.getreader("utf-8")
+	api = load(reader(web))
+
+	spread = api['data']['marketOrderBook']['spread']
+	mid = api['data']['marketOrderBook']['mid']
+
+	msg = 'SOUTHXCHANGE:\nPrecio de compra: %s\nPrecio de venta: %s' % (ask, bid)
+	msg += '\n\n'
+	msg += 'ORIONX:\nPrecio de compra: %s\nPrecio de venta: %s' % (mid + spread, mid - spread)
 
 	logger.info("precio() => %s" % msg.replace('\n',' // '))
 	update.message.reply_text("%s" % msg)	
