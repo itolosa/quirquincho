@@ -82,65 +82,6 @@ def send(bot, update, args):
 	update.message.reply_text("%s" % sending)		
 
 
-# Dado
-def dice(bot, update, args):
-	user = update.message.from_user
-	userHash = hash(user.id)
-	userAddress = getaddress(userHash)
-	userBalance = float(rpc.getbalance(userHash))
-	rand = -1
-
-	try:
-		bet = float(args[0])
-
-		if not bet > 0:
-			result = "apuesta inválida"
-
-		elif not bet < userBalance:
-			result = "balance insuficiente"
-
-		else:
-			botAddress = getaddress("quirquincho")
-			botBalance = float(rpc.getbalance("quirquincho"))
-
-			prize = bet * 2
-			maxNumber = 1000
-			lucky = int(maxNumber/2)
-
-			if not botBalance > prize:
-				result = "No tengo tantas chauchas :c"
-			else:
-				# Seed y generación de valor aleatorio
-				seed(repr(urandom(64)))
-				rand = randint(0,maxNumber)
-
-				# Bonus
-				if rand == lucky:
-					result = "BONUS x2 !! Ganaste %f CHA\nNúmero: %i" % (prize, lucky)
-					rpc.sendfrom("quirquincho", userAddress, prize)
-
-				# Ganar
-				elif rand > lucky:
-					result = "Ganaste %f CHA !\nNúmero: %i" % (bet, rand)
-					rpc.sendfrom("quirquincho", userAddress, bet)
-
-				# ???
-				elif rand == int(bet):
-					result = "Vale otro..."
-
-				# Perder
-				else:
-					result = "Perdiste %f CHA\nNúmero: %i" % (bet, rand)
-					rpc.sendfrom(userHash, botAddress, bet)
-	except:
-		bet = 0.0
-		rand = 0
-		result = "syntax error\nUSO: /dice apuesta"
-	
-	logger.info("dice(%i, %f, %i) => %s" % (user.id, bet, rand, result.replace('\n',' // ')))
-	update.message.reply_text("%s" % result)		
-
-
 # Mostrar saldo y address de Quirquincho
 def info(bot, update):
 	address = getaddress("quirquincho")
@@ -230,7 +171,6 @@ def main():
 
 	# Listado de comandos
 	dp.add_handler(CommandHandler("send", send, pass_args=True))
-	dp.add_handler(CommandHandler("dice", dice, pass_args=True))
 	dp.add_handler(CommandHandler("address", address))
 	dp.add_handler(CommandHandler("balance", balance))
 	dp.add_handler(CommandHandler("start", start))
