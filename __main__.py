@@ -112,17 +112,20 @@ def precio(bot, update):
 	bid = '{0:.8f} BTC'.format(api['Bid'])
 	ask = '{0:.8f} BTC'.format(api['Ask'])
 	var = api['Variation24Hr']
-
-	orion = urlopen('https://api.orionx.io/graphql?query={marketOrderBook(marketCode:"CHACLP",limit:1){buy{limitPrice}sell{limitPrice}}}')
-	api = load(reader(orion))
-
-	buy = api['data']['marketOrderBook']['buy'][0]['limitPrice']
-	sell = api['data']['marketOrderBook']['sell'][0]['limitPrice']
-
 	msg = 'SOUTHXCHANGE:\nPrecio de compra: %s\nPrecio de venta: %s' % (ask, bid)
 	msg += '\n\n'
-	msg += 'ORIONX:\nPrecio de compra: $%s CLP\nPrecio de venta: $%s CLP' % (sell, buy)
+	try:
+		orion = urlopen('https://api.orionx.io/graphql?query={marketOrderBook(marketCode:"CHACLP",limit:1){buy{limitPrice}sell{limitPrice}}}')
+		api = load(reader(orion))
 
+		buy = api['data']['marketOrderBook']['buy'][0]['limitPrice']
+		sell = api['data']['marketOrderBook']['sell'][0]['limitPrice']
+	
+	
+		msg += 'ORIONX:\nPrecio de compra: $%s CLP\nPrecio de venta: $%s CLP' % (sell, buy)
+	except:
+		print("Orion saturado!")
+	
 	logger.info("precio() => %s" % msg.replace('\n',' // '))
 	update.message.reply_text("%s" % msg)	
 
